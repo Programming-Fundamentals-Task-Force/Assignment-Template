@@ -1,0 +1,71 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+env:
+  PROJECT_DIR: lab11
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+    - name: Console output
+      id: console-output
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Console output
+        setup-command: mvn compile -f $PROJECT_DIR/pom.xml
+        command: mvn exec:java -Dexec.mainClass="com.lab.App" --quiet -f $PROJECT_DIR/pom.xml
+        input: ''
+        expected-output: |-
+          Hello, world!
+        comparison-method: exact
+        timeout: 10
+        max-score: 10
+    - name: Unit test 1
+      id: unit-test-1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Unit test 1
+        setup-command: ''
+        command: "./gradle-tests/gradlew test --tests org.test.AccountTest.testCreate -p gradle-tests"
+        timeout: 10
+        max-score: 30
+    - name: Unit test 2
+      id: unit-test-2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Unit test 2
+        setup-command: ''
+        command: "./gradle-tests/gradlew test --tests org.test.AccountTest.testExecute -p gradle-tests"
+        timeout: 10
+        max-score: 30
+    - name: Unit test 3
+      id: unit-test-3
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Unit test 3
+        setup-command: ''
+        command: "./gradle-tests/gradlew test --tests org.test.AccountTest.testDestroy -p gradle-tests"
+        timeout: 10
+        max-score: 30
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        CONSOLE-OUTPUT_RESULTS: "${{steps.console-output.outputs.result}}"
+        UNIT-TEST-1_RESULTS: "${{steps.unit-test-1.outputs.result}}"
+        UNIT-TEST-2_RESULTS: "${{steps.unit-test-2.outputs.result}}"
+        UNIT-TEST-3_RESULTS: "${{steps.unit-test-3.outputs.result}}"
+      with:
+        runners: console-output,unit-test-1,unit-test-2,unit-test-3
