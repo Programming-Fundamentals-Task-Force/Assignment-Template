@@ -1,7 +1,8 @@
 package org.test;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayOutputStream;
@@ -19,15 +20,20 @@ class ClassTest {
     }
 
     @Test
-    void testOutput() {
+    public void testOutput() {
         Class object = new Class();
         object.printSomething();
         assertEquals(outputStreamCapture.toString().trim(), "expected output");
     }
 
     @Test
-    void testEquality() {
+    public void testEquality() {
         Class object = new Class();
         assertEquals(object.getValue(), "something");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        System.setOut(standardOut);
     }
 }
