@@ -10,6 +10,8 @@ Problem Statement: A brief description of the problem to solve or the scenario t
 
 ## Setup and Environment
 
+- **WARNING:** Do not modify the `.github` or `gradle-tests` directories. These directories are essential for the automated grading process, and any changes may result in incorrect grading.
+
 (Optional)
 
 - Provide details about setting up the project environment, such as:
