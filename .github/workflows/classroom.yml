@@ -43,22 +43,22 @@ jobs:
         comparison-method: exact
         timeout: 10
         max-score: 20
-    - name: Unit test 1
+    - name: output_conforms_to_the_expected_output
       id: unit-test-1
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: Unit test 1
+        test-name: output_conforms_to_the_expected_output
         setup-command: ''
-        command: "./gradle-tests/gradlew test --tests org.test.ClassTest.testOutput -p gradle-tests"
+        command: "./gradle-tests/gradlew test --tests org.test.ClassTest.output_conforms_to_the_expected_output -p gradle-tests"
         timeout: 10
         max-score: 40
-    - name: Unit test 2
+    - name: object_value_equals_something
       id: unit-test-2
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: Unit test 2
+        test-name: object_value_equals_something
         setup-command: ''
-        command: "./gradle-tests/gradlew test --tests org.test.ClassTest.testEquality -p gradle-tests"
+        command: "./gradle-tests/gradlew test --tests org.test.ClassTest.object_value_equals_something -p gradle-tests"
         timeout: 10
         max-score: 40
     - name: Autograding Reporter
